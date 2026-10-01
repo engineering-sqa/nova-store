@@ -21,7 +21,8 @@ export const QATestBar = () => {
     setIsCheckoutOpen,
     cartItemCount,
     user,
-    orders
+    orders,
+    apiOnline
   } = useStore();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -37,7 +38,13 @@ export const QATestBar = () => {
             <span style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>CI / E2E Ready</span>
           </div>
 
-          <div style={{ fontSize: "0.75rem", color: "var(--text-secondary)", marginBottom: "0.75rem", background: "var(--bg-tertiary)", padding: "0.4rem 0.6rem", borderRadius: "var(--radius-sm)" }} data-testid="qa-state-summary">
+          <div style={{ fontSize: "0.75rem", color: "var(--text-secondary)", marginBottom: "0.75rem", background: "var(--bg-tertiary)", padding: "0.5rem 0.6rem", borderRadius: "var(--radius-sm)" }} data-testid="qa-state-summary">
+            <div style={{ display: "flex", alignItems: "center", gap: "0.35rem", marginBottom: "0.25rem" }}>
+              <span style={{ display: "inline-block", width: "8px", height: "8px", borderRadius: "50%", background: apiOnline ? "var(--color-success)" : "var(--color-warning)" }}></span>
+              <span style={{ fontWeight: 600, color: apiOnline ? "var(--color-success)" : "var(--color-warning)" }} data-testid="api-status-indicator">
+                {apiOnline ? "REST API: json-server :5000" : "REST API: Local Cache"}
+              </span>
+            </div>
             <div>User: <strong>{user ? user.email : "Guest"}</strong></div>
             <div>Cart Count: <strong>{cartItemCount}</strong> | Orders: <strong>{orders.length}</strong></div>
           </div>

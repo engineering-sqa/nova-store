@@ -195,6 +195,30 @@ Every interactive element, input field, and verification state is tagged with ex
 
 ---
 
+## 🔌 Backend & REST APIs (JSON Server)
+
+The application includes a fully functional REST API powered by **`json-server`** running on port `5000` with automated database persistence in [`db.json`](file:///c:/Users/pavan/Desktop/e-commerce/db.json).
+
+### Available REST Endpoints
+
+| HTTP Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/products` | Retrieve all 12 catalog products |
+| `GET` | `/products/:id` | Retrieve single product details |
+| `PATCH` | `/products/:id` | Update product ratings & review list |
+| `GET` | `/users` | Retrieve test accounts |
+| `GET` | `/users?email=...` | Mock login verification query |
+| `POST` | `/users` | Register a new user |
+| `GET` | `/orders` | Retrieve placed orders list |
+| `POST` | `/orders` | Place & record new order |
+| `GET` | `/coupons` | Retrieve active promo vouchers |
+| `GET` | `/wishlist` | Retrieve saved items collection |
+
+> **Vite Proxy:** All frontend requests to `/api/*` are automatically forwarded to `http://localhost:5000/*` via Vite's proxy, preventing CORS issues.
+> **Resilience:** If the JSON server is offline, the client seamlessly falls back to local cache so automated test runs never crash.
+
+---
+
 ## 🚀 Getting Started
 
 ### 1. Install Dependencies
@@ -202,13 +226,23 @@ Every interactive element, input field, and verification state is tagged with ex
 npm install
 ```
 
-### 2. Run Local Development Server
+### 2. Run Both Backend and Frontend Concurrently
 ```bash
 npm run dev
 ```
-The server will start at `http://localhost:5173`.
+- **Backend REST API**: `http://localhost:5000/`
+- **Frontend App**: `http://localhost:5173/`
 
-### 3. Production Build & Preview
+### 3. Run Independently (Optional)
+```bash
+# Start JSON Server only
+npm run server
+
+# Start Frontend Vite only
+npm run dev:frontend
+```
+
+### 4. Production Build & Preview
 ```bash
 npm run build
 npm run preview

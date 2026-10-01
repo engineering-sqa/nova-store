@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { INITIAL_PRODUCTS, TEST_ACCOUNTS, PROMO_CODES } from "../data/products";
+import { api } from "../services/api";
 
 const StoreContext = createContext(null);
 
@@ -15,6 +16,8 @@ const STORAGE_KEYS = {
 export const StoreProvider = ({ children }) => {
   // Products
   const [products, setProducts] = useState(INITIAL_PRODUCTS);
+  const [coupons, setCoupons] = useState(PROMO_CODES);
+  const [apiOnline, setApiOnline] = useState(false);
 
   // Cart
   const [cart, setCart] = useState(() => {
@@ -51,7 +54,6 @@ export const StoreProvider = ({ children }) => {
     try {
       const saved = localStorage.getItem(STORAGE_KEYS.ORDERS);
       if (saved) return JSON.parse(saved);
-      // Default demo order
       return [
         {
           id: "ORD-94821",
@@ -114,12 +116,42 @@ export const StoreProvider = ({ children }) => {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [sortBy, setSortBy] = useState("featured"); // 'featured' | 'price-asc' | 'price-desc' | 'rating'
+  const [sortBy, setSortBy] = useState("featured");
   const [priceRange, setPriceRange] = useState(1000);
   const [inStockOnly, setInStockOnly] = useState(false);
 
   // Toasts
   const [toasts, setToasts] = useState([]);
+
+  // Fetch initial data from JSON Server
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadBackendData() {
+      try {
+        const fetchedProducts = await api.getProducts();
+        if (isMounted && fetchedProducts && fetchedProducts.length > 0) {
+          setProducts(fetchedProducts);
+          setApiOnline(true);
+        }
+
+        const fetchedOrders = await api.getOrders();
+        if (isMounted && fetchedOrders && fetchedOrders.length > 0) {
+          setOrders(fetchedOrders);
+        }
+
+        const fetchedCoupons = await api.getCoupons();
+        if (isMounted && fetchedCoupons) {
+          setCoupons(fetchedCoupons);
+        }
+      } catch (err) {
+        console.warn("JSON Server load fallback to local data:", err);
+      }
+    }
+
+    loadBackendData();
+    return () => { isMounted = false; };
+  }, []);
 
   // Sync with LocalStorage
   useEffect(() => {
@@ -266,8 +298,7 @@ export const StoreProvider = ({ children }) => {
   const isInWishlist = (productId) => wishlist.includes(productId);
 
   // Authentication
-  const login = (email, password) => {
-    // Check against test accounts or accept any valid credentials
+  const login = async (email, password) => {
     if (!email || !password) {
       return { success: false, message: "Please enter email and password" };
     }
@@ -276,30 +307,19 @@ export const StoreProvider = ({ children }) => {
       return { success: false, message: "Password must be at least 6 characters" };
     }
 
-    let authenticatedUser;
-    if (email.toLowerCase() === TEST_ACCOUNTS.admin.email.toLowerCase()) {
-      if (password === TEST_ACCOUNTS.admin.password) {
-        authenticatedUser = { ...TEST_ACCOUNTS.admin };
-      } else {
-        return { success: false, message: "Invalid admin password" };
-      }
-    } else if (email.toLowerCase() === TEST_ACCOUNTS.customer.email.toLowerCase()) {
-      authenticatedUser = { ...TEST_ACCOUNTS.customer };
+    // Call API / JSON Server
+    const res = await api.login(email, password);
+    if (res.success && res.user) {
+      setUser(res.user);
+      setIsAuthOpen(false);
+      addToast(`Welcome back, ${res.user.name}!`, "success");
+      return { success: true };
     } else {
-      authenticatedUser = {
-        name: email.split("@")[0].replace(/[._]/g, " "),
-        email,
-        role: "customer"
-      };
+      return { success: false, message: res.message || "Invalid credentials" };
     }
-
-    setUser(authenticatedUser);
-    setIsAuthOpen(false);
-    addToast(`Welcome back, ${authenticatedUser.name}!`, "success");
-    return { success: true };
   };
 
-  const signup = (name, email, password) => {
+  const signup = async (name, email, password) => {
     if (!name || !email || !password) {
       return { success: false, message: "All fields are required" };
     }
@@ -307,7 +327,7 @@ export const StoreProvider = ({ children }) => {
       return { success: false, message: "Password must be at least 6 characters" };
     }
 
-    const newUser = { name, email, role: "customer" };
+    const newUser = await api.register(name, email, password);
     setUser(newUser);
     setIsAuthOpen(false);
     addToast(`Account created! Welcome, ${name}!`, "success");
@@ -325,7 +345,7 @@ export const StoreProvider = ({ children }) => {
     if (!cleanCode) {
       return { success: false, message: "Enter a coupon code" };
     }
-    const coupon = PROMO_CODES[cleanCode];
+    const coupon = coupons[cleanCode] || PROMO_CODES[cleanCode];
     if (coupon) {
       setAppliedCoupon(coupon);
       addToast(`Promo code "${cleanCode}" applied!`, "success");
@@ -370,9 +390,14 @@ export const StoreProvider = ({ children }) => {
       ...orderData
     };
 
+    // Optimistically update state
     setOrders((prev) => [newOrder, ...prev]);
     setCart([]);
     setAppliedCoupon(null);
+
+    // Persist via REST API to JSON Server
+    api.createOrder(newOrder);
+
     addToast(`Order #${newOrderId} placed successfully!`, "success");
     return newOrder;
   };
@@ -395,6 +420,13 @@ export const StoreProvider = ({ children }) => {
           const newAvgRating = (
             updatedReviews.reduce((sum, r) => sum + r.rating, 0) / updatedReviews.length
           ).toFixed(1);
+
+          // Sync to JSON Server
+          api.patchProductReviews(productId, {
+            reviews: updatedReviews,
+            reviewCount: updatedReviews.length,
+            rating: Number(newAvgRating)
+          });
 
           return {
             ...p,
@@ -497,6 +529,7 @@ export const StoreProvider = ({ children }) => {
         qaSeedCart,
         qaLoginCustomer,
         qaResetAll,
+        apiOnline
       }}
     >
       {children}

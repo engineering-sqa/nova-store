@@ -4,12 +4,16 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "server": "json-server db.json --port 5000",
+    "dev:frontend": "vite",
+    "dev": "concurrently -k -n \"SERVER,CLIENT\" -c \"cyan,magenta\" \"npm run server\" \"npm run dev:frontend\"",
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview"
   },
   "dependencies": {
+    "concurrently": "^10.0.5",
+    "json-server": "^1.0.0-beta.15",
     "lucide-react": "^1.49.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
