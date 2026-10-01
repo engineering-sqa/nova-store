@@ -1,0 +1,41 @@
+name: SuperQA Tests
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Run SuperQA Tests
+      id: superqa
+      uses: superqa-ai/superqa-githubaction@YOUR_UPDATED_ACTION_COMMIT_SHA
+      with:
+        api_key: ${{ secrets.SUPERQA_API_KEY }}
+        project_name: 'Nova superqa'
+        test_plan_name: 'Regression Tests'
+        environment_name: 'staging'
+        wait_for_result: 'true'
+        timeout_seconds: '1800'
+        poll_interval_seconds: '5'
+
+    - name: Show SuperQA result
+      if: always()
+      env:
+        RESULT: ${{ steps.superqa.outputs.test_result }}
+        REPORT_URL: ${{ steps.superqa.outputs.report_url }}
+      run: |
+        echo "Result: $RESULT"
+        echo "Report: $REPORT_URL"
