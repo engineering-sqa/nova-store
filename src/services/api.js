@@ -1,12 +1,18 @@
 import { INITIAL_PRODUCTS, TEST_ACCOUNTS, PROMO_CODES } from "../data/products";
 
 const API_BASE = "/api";
+const isLocalhost = typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
 
 // Helper for safe fetch with timeout & fallback
 async function request(endpoint, options = {}) {
+  // If deployed to static hosts like Netlify and not on localhost, use client mock directly
+  if (!isLocalhost) {
+    return null;
+  }
+
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 3000);
+    const timeoutId = setTimeout(() => controller.abort(), 2000);
 
     const response = await fetch(`${API_BASE}${endpoint}`, {
       ...options,
@@ -20,13 +26,17 @@ async function request(endpoint, options = {}) {
     clearTimeout(timeoutId);
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      return null;
+    }
+
+    const contentType = response.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+      return null;
     }
 
     return await response.json();
-  } catch (error) {
+  } catch {
     // Return null on failure so caller can gracefully use fallback
-    console.warn(`API request to ${endpoint} failed or timed out:`, error.message);
     return null;
   }
 }
