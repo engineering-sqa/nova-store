@@ -334,6 +334,19 @@ export const StoreProvider = ({ children }) => {
     return { success: true };
   };
 
+  const loginGuest = () => {
+    const guestUser = {
+      id: "usr-guest",
+      name: "Guest Explorer",
+      email: "guest@superqa.com",
+      role: "guest"
+    };
+    setUser(guestUser);
+    setIsAuthOpen(false);
+    addToast("Welcome! Signed in as Guest Explorer", "info");
+    return { success: true };
+  };
+
   const logout = () => {
     setUser(null);
     addToast("Logged out successfully", "info");
@@ -497,6 +510,7 @@ export const StoreProvider = ({ children }) => {
         user,
         login,
         signup,
+        loginGuest,
         logout,
         orders,
         placeOrder,

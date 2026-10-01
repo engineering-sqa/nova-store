@@ -6,7 +6,7 @@ import { ProductGrid } from "./components/ProductGrid";
 import { ProductModal } from "./components/ProductModal";
 import { CartDrawer } from "./components/CartDrawer";
 import { CheckoutModal } from "./components/CheckoutModal";
-import { AuthModal } from "./components/AuthModal";
+import { LoginScreen } from "./components/LoginScreen";
 import { OrdersView } from "./components/OrdersView";
 import { WishlistView } from "./components/WishlistView";
 import { QATestBar } from "./components/QATestBar";
@@ -14,7 +14,18 @@ import { Toast } from "./components/Toast";
 import { Footer } from "./components/Footer";
 
 function MainContent() {
-  const { activeView } = useStore();
+  const { activeView, user } = useStore();
+
+  // If not logged in, redirect to and render LoginScreen as initial screen
+  if (!user) {
+    return (
+      <div className="auth-root-wrapper" data-testid="auth-root-wrapper">
+        <LoginScreen />
+        <QATestBar />
+        <Toast />
+      </div>
+    );
+  }
 
   return (
     <div className="app-layout" data-testid="app-layout">
@@ -34,7 +45,6 @@ function MainContent() {
       <ProductModal />
       <CartDrawer />
       <CheckoutModal />
-      <AuthModal />
       <QATestBar />
       <Toast />
 
