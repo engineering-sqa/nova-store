@@ -5,11 +5,6 @@ const isLocalhost = typeof window !== "undefined" && (window.location.hostname =
 
 // Helper for safe fetch with timeout & fallback
 async function request(endpoint, options = {}) {
-  // If deployed to static hosts like Netlify and not on localhost, use client mock directly
-  if (!isLocalhost) {
-    return null;
-  }
-
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 2000);

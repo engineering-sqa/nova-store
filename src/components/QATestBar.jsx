@@ -42,7 +42,7 @@ export const QATestBar = () => {
             <div style={{ display: "flex", alignItems: "center", gap: "0.35rem", marginBottom: "0.25rem" }}>
               <span style={{ display: "inline-block", width: "8px", height: "8px", borderRadius: "50%", background: apiOnline ? "var(--color-success)" : "var(--color-warning)" }}></span>
               <span style={{ fontWeight: 600, color: apiOnline ? "var(--color-success)" : "var(--color-warning)" }} data-testid="api-status-indicator">
-                {apiOnline ? "REST API: json-server :5000" : "REST API: Local Cache"}
+                {apiOnline ? (typeof window !== "undefined" && window.location.hostname === "localhost" ? "REST API: json-server :5000" : "REST API: Netlify Functions") : "REST API: Local Cache"}
               </span>
             </div>
             <div>User: <strong>{user ? user.email : "Guest"}</strong></div>
