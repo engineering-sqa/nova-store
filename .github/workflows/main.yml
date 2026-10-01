@@ -21,7 +21,7 @@ jobs:
       
     - name: Run SuperQA Tests
       id: superqa
-      uses: superqa-ai/superqa-githubaction@YOUR_UPDATED_ACTION_COMMIT_SHA
+      uses: superqa-ai/superqa-githubaction@main
       with:
         api_key: ${{ secrets.SUPERQA_API_KEY }}
         project_name: 'Nova superqa'
