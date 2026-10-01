@@ -1,42 +1,55 @@
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
+import { INITIAL_PRODUCTS, TEST_ACCOUNTS, PROMO_CODES } from "../../src/data/products.js";
 
-// Load initial database
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// In-memory state initialized from db.json or fallback
-let dbData = null;
+// In-memory persistent database for serverless container lifecycle
+let inMemoryDb = null;
 
 function getDb() {
-  if (dbData) return dbData;
-  try {
-    const dbPath = path.resolve(__dirname, "../../db.json");
-    if (fs.existsSync(dbPath)) {
-      dbData = JSON.parse(fs.readFileSync(dbPath, "utf-8"));
-      return dbData;
-    }
-  } catch (e) {
-    console.warn("Could not load db.json, using memory default:", e);
+  if (!inMemoryDb) {
+    inMemoryDb = {
+      products: JSON.parse(JSON.stringify(INITIAL_PRODUCTS)),
+      users: [
+        { id: "usr-1", ...TEST_ACCOUNTS.customer },
+        { id: "usr-2", ...TEST_ACCOUNTS.admin }
+      ],
+      orders: [
+        {
+          id: "ORD-94821",
+          date: "2026-09-28T14:30:00.000Z",
+          items: [
+            {
+              id: "prod-1",
+              title: "Apex ANC Wireless Headphones Pro",
+              price: 249.99,
+              quantity: 1,
+              selectedColor: "Midnight Black",
+              image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=700&q=80"
+            }
+          ],
+          subtotal: 249.99,
+          discount: 0,
+          shippingFee: 0,
+          tax: 20.00,
+          total: 269.99,
+          status: "Delivered",
+          shippingAddress: {
+            fullName: "Alex QA Runner",
+            address: "100 Innovation Way",
+            city: "San Francisco",
+            postalCode: "94105",
+            country: "United States"
+          },
+          paymentMethod: "Credit Card (•••• 4242)"
+        }
+      ],
+      coupons: Object.values(PROMO_CODES).map((c, i) => ({ id: `cp-${i + 1}`, ...c })),
+      wishlist: [
+        { id: "w1", productId: "prod-1" },
+        { id: "w2", productId: "prod-3" }
+      ],
+      cart: []
+    };
   }
-
-  dbData = {
-    products: [],
-    users: [
-      { id: "usr-1", email: "testuser@superqa.com", password: "password123", name: "Alex QA Runner", role: "customer" },
-      { id: "usr-2", email: "admin@superqa.com", password: "adminpassword", name: "Sarah SuperAdmin", role: "admin" }
-    ],
-    orders: [],
-    coupons: [
-      { id: "cp-1", code: "SUPERQA20", discountPercent: 20, description: "20% SuperQA Special Discount" },
-      { id: "cp-2", code: "FREESHIP", freeShipping: true, description: "100% Free Shipping Voucher" },
-      { id: "cp-3", code: "WELCOME10", discountPercent: 10, description: "10% Welcome Discount" }
-    ],
-    wishlist: [],
-    cart: []
-  };
-  return dbData;
+  return inMemoryDb;
 }
 
 const headers = {
@@ -54,17 +67,16 @@ export const handler = async (event) => {
     return { statusCode: 204, headers };
   }
 
-  // Parse path: Netlify rewrites /api/* to /.netlify/functions/api/:splat
-  // Normalize path to strip function prefix
-  let cleanPath = event.path.replace(/^\/\.netlify\/functions\/api/, "");
-  cleanPath = cleanPath.replace(/^\/api/, "");
+  // Normalize path
+  let cleanPath = (event.path || "")
+    .replace(/^\/\.netlify\/functions\/api/, "")
+    .replace(/^\/api/, "");
   if (!cleanPath.startsWith("/")) cleanPath = "/" + cleanPath;
 
   const db = getDb();
-  const segments = cleanPath.split("/").filter(Boolean); // e.g. ['products', 'prod-1']
-  const resource = segments[0]; // e.g. 'products'
-  const id = segments[1]; // e.g. 'prod-1'
-
+  const segments = cleanPath.split("/").filter(Boolean);
+  const resource = segments[0];
+  const id = segments[1];
   const queryParams = event.queryStringParameters || {};
 
   try {
@@ -154,13 +166,13 @@ export const handler = async (event) => {
       }
     }
 
-    // Fallback: Status info
+    // Default info
     return {
       statusCode: 200,
       headers,
       body: JSON.stringify({
         status: "online",
-        service: "NovaStore Serverless REST API",
+        service: "NovaStore Netlify Serverless REST API",
         endpoints: ["/api/products", "/api/users", "/api/orders", "/api/coupons", "/api/wishlist"]
       })
     };
