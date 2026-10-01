@@ -197,25 +197,27 @@ Every interactive element, input field, and verification state is tagged with ex
 
 ## 🔌 Backend & REST APIs (JSON Server)
 
-The application includes a fully functional REST API powered by **`json-server`** running on port `5000` with automated database persistence in [`db.json`](file:///c:/Users/pavan/Desktop/e-commerce/db.json).
+The application provides a fully functional REST API across both environments:
+- **Local Dev & CI**: Powered by **`json-server`** on port `5000` with [`db.json`](file:///c:/Users/pavan/Desktop/e-commerce/db.json).
+- **Netlify Production**: Powered by **Netlify Serverless Functions** (`netlify/functions/api.js`), serving live REST requests at `https://dainty-boba-e1bc7b.netlify.app/api/*` at **$0 cost** (100% Free tier).
 
 ### Available REST Endpoints
 
 | HTTP Method | Endpoint | Description |
 |---|---|---|
-| `GET` | `/products` | Retrieve all 12 catalog products |
-| `GET` | `/products/:id` | Retrieve single product details |
-| `PATCH` | `/products/:id` | Update product ratings & review list |
-| `GET` | `/users` | Retrieve test accounts |
-| `GET` | `/users?email=...` | Mock login verification query |
-| `POST` | `/users` | Register a new user |
-| `GET` | `/orders` | Retrieve placed orders list |
-| `POST` | `/orders` | Place & record new order |
-| `GET` | `/coupons` | Retrieve active promo vouchers |
-| `GET` | `/wishlist` | Retrieve saved items collection |
+| `GET` | `/api/products` | Retrieve all 12 catalog products |
+| `GET` | `/api/products/:id` | Retrieve single product details |
+| `PATCH` | `/api/products/:id` | Update product ratings & review list |
+| `GET` | `/api/users` | Retrieve test accounts |
+| `GET` | `/api/users?email=...` | Mock login verification query |
+| `POST` | `/api/users` | Register a new user |
+| `GET` | `/api/orders` | Retrieve placed orders list |
+| `POST` | `/api/orders` | Place & record new order |
+| `GET` | `/api/coupons` | Retrieve active promo vouchers |
+| `GET` | `/api/wishlist` | Retrieve saved items collection |
 
-> **Vite Proxy:** All frontend requests to `/api/*` are automatically forwarded to `http://localhost:5000/*` via Vite's proxy, preventing CORS issues.
-> **Resilience:** If the JSON server is offline, the client seamlessly falls back to local cache so automated test runs never crash.
+> **Vite Proxy:** All frontend requests to `/api/*` are automatically forwarded to `http://localhost:5000/*` in local development via Vite's proxy.
+> **Netlify Rewrites:** All requests to `/api/*` on Netlify are redirected to `/.netlify/functions/api/*`.
 
 ---
 
