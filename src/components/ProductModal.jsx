@@ -13,11 +13,7 @@ export const ProductModal = () => {
     addReview
   } = useStore();
 
-  if (!selectedProduct) return null;
-
-  const [selectedColor, setSelectedColor] = useState(
-    selectedProduct.colors ? selectedProduct.colors[0] : "Default"
-  );
+  const [selectedColor, setSelectedColor] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("overview"); // 'overview' | 'specs' | 'reviews'
   
@@ -26,14 +22,17 @@ export const ProductModal = () => {
   const [reviewComment, setReviewComment] = useState("");
   const [reviewName, setReviewName] = useState("");
 
+  if (!selectedProduct) return null;
+
+  const currentColor = selectedColor || (selectedProduct.colors ? selectedProduct.colors[0] : "Default");
   const isWishlisted = isInWishlist(selectedProduct.id);
 
   const handleAddToCart = () => {
-    addToCart(selectedProduct, quantity, selectedColor);
+    addToCart(selectedProduct, quantity, currentColor);
   };
 
   const handleBuyNow = () => {
-    addToCart(selectedProduct, quantity, selectedColor);
+    addToCart(selectedProduct, quantity, currentColor);
     setSelectedProduct(null);
     setIsCheckoutOpen(true);
   };
@@ -194,14 +193,14 @@ export const ProductModal = () => {
                 {selectedProduct.colors && (
                   <div style={{ marginBottom: "1.5rem" }}>
                     <div style={{ fontSize: "0.8rem", fontWeight: 700, marginBottom: "0.5rem", color: "var(--text-muted)" }}>
-                      COLOR: <span style={{ color: "var(--text-primary)" }}>{selectedColor}</span>
+                      COLOR: <span style={{ color: "var(--text-primary)" }}>{currentColor}</span>
                     </div>
                     <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
                       {selectedProduct.colors.map((color) => (
                         <button
                           key={color}
                           onClick={() => setSelectedColor(color)}
-                          className={`detail-color-pill ${selectedColor === color ? "active" : ""}`}
+                          className={`detail-color-pill ${currentColor === color ? "active" : ""}`}
                           data-testid={`color-option-${color.toLowerCase().replace(/\s+/g, "-")}`}
                         >
                           {color}

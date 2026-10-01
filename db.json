@@ -462,6 +462,110 @@
         "country": "United States"
       },
       "paymentMethod": "Credit Card (•••• 4242)"
+    },
+    {
+      "id": "_I_1Wve4sV4",
+      "date": "2026-10-01T07:39:10.443Z",
+      "items": [
+        {
+          "id": "prod-1",
+          "title": "Apex ANC Wireless Headphones Pro",
+          "category": "Audio",
+          "price": 249.99,
+          "originalPrice": 299.99,
+          "rating": 4.8,
+          "reviewCount": 142,
+          "badge": "Bestseller",
+          "inStock": true,
+          "stockCount": 25,
+          "colors": [
+            "Midnight Black",
+            "Platinum Silver",
+            "Deep Navy"
+          ],
+          "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=700&q=80",
+          "description": "Engineered with industry-leading Active Noise Cancellation, custom 40mm beryllium drivers, and 45-hour battery life. Ultra-plush memory foam cushions ensure all-day comfort.",
+          "specs": {
+            "Battery Life": "Up to 45 Hours",
+            "Noise Cancellation": "Dual-chip Hybrid ANC",
+            "Connectivity": "Bluetooth 5.3 & 3.5mm Aux",
+            "Weight": "254 grams",
+            "Fast Charging": "10 min for 5 hours"
+          },
+          "reviews": [
+            {
+              "id": "r1",
+              "user": "Alex Mercer",
+              "rating": 5,
+              "comment": "Incredible soundstage and ANC. Blocks out entire train rides.",
+              "date": "2026-09-15"
+            },
+            {
+              "id": "r2",
+              "user": "Elena Rostova",
+              "rating": 4,
+              "comment": "Super comfy, premium build. Mic quality on calls is crystal clear.",
+              "date": "2026-09-20"
+            }
+          ],
+          "quantity": 1,
+          "selectedColor": "Midnight Black"
+        },
+        {
+          "id": "prod-2",
+          "title": "Vortex OLED Smart Watch Ultra",
+          "category": "Wearables",
+          "price": 389,
+          "originalPrice": 429,
+          "rating": 4.9,
+          "reviewCount": 98,
+          "badge": "New",
+          "inStock": true,
+          "stockCount": 18,
+          "colors": [
+            "Titanium Gray",
+            "Starlight",
+            "Onyx"
+          ],
+          "image": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=700&q=80",
+          "description": "Aerospace-grade titanium case featuring an always-on 2.1-inch sapphire glass AMOLED display. Comprehensive ECG, SpO2, and dual-frequency GPS tracking.",
+          "specs": {
+            "Display": "2.1-inch Always-on AMOLED (1000 nits)",
+            "Battery": "Up to 4 days typical use",
+            "Water Resistance": "50m (5 ATM swimproof)",
+            "Sensors": "Optical HR, ECG, SpO2, Skin Temp",
+            "Compatibility": "iOS & Android"
+          },
+          "reviews": [
+            {
+              "id": "r3",
+              "user": "Michael Chang",
+              "rating": 5,
+              "comment": "Battery genuinely lasts 4 full days with workouts. GPS locks in 3 seconds.",
+              "date": "2026-09-18"
+            }
+          ],
+          "quantity": 2,
+          "selectedColor": "Titanium Gray"
+        }
+      ],
+      "subtotal": 1027.99,
+      "discount": 205.59799999999998,
+      "shippingFee": 0,
+      "tax": 65.79136000000001,
+      "total": 888.1833600000001,
+      "status": "Processing",
+      "shippingAddress": {
+        "fullName": "Alex QA Automation",
+        "email": "testrunner@superqa.com",
+        "phone": "+1 (800) 555-0199",
+        "address": "100 Infinite Loop, Suite 400",
+        "city": "Cupertino",
+        "postalCode": "95014",
+        "country": "United States"
+      },
+      "deliveryMethod": "standard",
+      "paymentMethod": "Credit Card ending in 9010"
     }
   ],
   "cart": [],
@@ -494,5 +598,6 @@
       "discountPercent": 10,
       "description": "10% Welcome Discount"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

@@ -30,8 +30,6 @@ export const CheckoutModal = () => {
     setActiveView
   } = useStore();
 
-  if (!isCheckoutOpen) return null;
-
   // Stepper: 1: Shipping, 2: Method, 3: Payment, 4: Review, 5: Confirmed
   const [currentStep, setCurrentStep] = useState(1);
   const [confirmedOrder, setConfirmedOrder] = useState(null);
@@ -135,6 +133,8 @@ export const CheckoutModal = () => {
     handleClose();
     setActiveView("orders");
   };
+
+  if (!isCheckoutOpen) return null;
 
   return (
     <div className="modal-overlay" onClick={handleClose} data-testid="checkout-modal-overlay">
