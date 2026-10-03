@@ -18,7 +18,11 @@ jobs:
       uses: superqa-ai/superqa-githubaction@d3ccbfd039d70c8e5756264d90883bc0df69f4c4
       with:
         api_key: ${{ secrets.SUPERQA_API_KEY }}
+        project_name: "Nova SuperQA"
+        test_plan_name: "nova superqa login - Smoke Test Plan"
+        environment_name: "staging"
         mode: protect
+        
 
     - name: Show SuperQA result
       if: always()
