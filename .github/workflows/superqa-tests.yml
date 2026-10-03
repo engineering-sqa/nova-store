@@ -15,7 +15,7 @@ jobs:
     steps:
     - name: Analyze changes and run affected tests
       id: superqa
-      uses: superqa-ai/superqa-githubaction@3d71bfa1bd063be6aa9ad1366d3ca391900455a7
+      uses: superqa-ai/superqa-githubaction@v1
       with:
         api_key: ${{ secrets.SUPERQA_API_KEY }}
         mode: protect
