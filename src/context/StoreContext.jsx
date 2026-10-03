@@ -343,7 +343,7 @@ export const StoreProvider = ({ children }) => {
     };
     setUser(guestUser);
     setIsAuthOpen(false);
-    addToast("Welcome! Signed in as Guest", "info");
+    addToast("Welcome! Signed in as Guest ", "info");
     return { success: true };
   };
 
