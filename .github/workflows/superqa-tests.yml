@@ -1,0 +1,30 @@
+name: SuperQA Protect
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  superqa-protect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    
+    steps:
+    - name: Analyze changes and run affected tests
+      id: superqa
+      uses: superqa-ai/superqa-githubaction@3d71bfa1bd063be6aa9ad1366d3ca391900455a7
+      with:
+        api_key: ${{ secrets.SUPERQA_API_KEY }}
+        mode: protect
+
+    - name: Show SuperQA result
+      if: always()
+      env:
+        RESULT: ${{ steps.superqa.outputs.test_result }}
+        REPORT_URL: ${{ steps.superqa.outputs.report_url }}
+      run: |
+        echo "Result: $RESULT"
+        echo "Report: $REPORT_URL"
