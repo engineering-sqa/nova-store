@@ -20,7 +20,7 @@ jobs:
         api_key: ${{ secrets.SUPERQA_API_KEY }}
         project_name: "Nova SuperQA"
         test_plan_name: "nova superqa login - Smoke Test Plan"
-        environment_name: "production"
+        environment_name: "staging"
         
 
     - name: Show SuperQA result
