@@ -299,7 +299,7 @@ export const LoginScreen = () => {
                   className="btn-primary login-submit-btn"
                   data-testid="auth-submit-btn"
                 >
-                  <span>{isLoading ? "Authenticating..." : activeTab === "login" ? "Sign In to NovaStore" : "Register & Start Shopping"}</span>
+                  <span>{isLoading ? "Authenticating..." : activeTab === "login" ? "Sign In" : "Register & Start Shopping"}</span>
                   <ArrowRight size={16} />
                 </button>
               </form>
