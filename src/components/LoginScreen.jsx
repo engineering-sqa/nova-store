@@ -240,7 +240,7 @@ export const LoginScreen = () => {
                         id="signup-name"
                         type="text"
                         required
-                        placeholder="Alex QA"
+                        placeholder="John Doe"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         className="form-input login-input-field"
@@ -258,7 +258,7 @@ export const LoginScreen = () => {
                       id="auth-email"
                       type="email"
                       required
-                      placeholder="testuser@superqa.com"
+                      placeholder="abc@email.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="form-input login-input-field"
