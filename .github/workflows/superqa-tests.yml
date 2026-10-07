@@ -21,7 +21,6 @@ jobs:
         project_name: "Nova SuperQA"
         test_plan_name: "nova superqa login - Smoke Test Plan"
         environment_name: "staging"
-        mode: protect
         
 
     - name: Show SuperQA result
