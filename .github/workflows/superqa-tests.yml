@@ -17,7 +17,7 @@ jobs:
       id: superqa
       uses: usecasemonitor/superqa-githubaction@main
       with:
-        api_key: ${{ secrets.SUPERQA_API_KEY }}
+        api_key: "az-dcc80233247e31a467db7c02105c7e04"
         project_name: "Nova SuperQA"
         test_plan_name: "nova superqa login - Smoke Test Plan"
         environment_name: "staging"
