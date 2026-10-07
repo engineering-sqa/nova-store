@@ -51,7 +51,7 @@ export const Header = () => {
               <ShoppingBag size={20} />
             </div>
             <span>Nova<span className="text-gradient">Store</span></span>
-            <span className="brand-badge" data-testid="superqa-badge">SUPERQA TEST</span>
+            <span className="brand-badge" data-testid="superqa-badge">SUPERQA</span>
           </button>
 
           {/* Search Bar */}
