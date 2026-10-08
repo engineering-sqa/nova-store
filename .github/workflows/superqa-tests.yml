@@ -1,4 +1,4 @@
-name: SuperQA Protect
+name: SuperQA AI
 
 on:
   push:
@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  pull-requests: read
 
 jobs:
   superqa-protect:
@@ -17,16 +18,28 @@ jobs:
     steps:
     - name: Analyze changes and run affected tests
       id: superqa
-      uses: usecasemonitor/superqa-githubaction@dev1.1
+      uses: superqa-ai/superqa-githubaction@v1
       with:
         api_key: ${{ secrets.SUPERQA_API_KEY }}
+        project_name: 'Nova SuperQA'
         mode: protect
+        wait_for_result: 'true'
+        timeout_seconds: '1800'
+        poll_interval_seconds: '5'
 
     - name: Show SuperQA result
       if: always()
       env:
         RESULT: ${{ steps.superqa.outputs.test_result }}
+        DECISION: ${{ steps.superqa.outputs.release_decision }}
+        CONFIDENCE: ${{ steps.superqa.outputs.confidence_score }}
         REPORT_URL: ${{ steps.superqa.outputs.report_url }}
+        ERROR_MESSAGE: ${{ steps.superqa.outputs.error_message }}
       run: |
         echo "Result: $RESULT"
+        echo "Release decision: $DECISION"
+        echo "Confidence: $CONFIDENCE"
         echo "Report: $REPORT_URL"
+        if [ -n "$ERROR_MESSAGE" ]; then
+          echo "Error: $ERROR_MESSAGE"
+        fi
