@@ -21,6 +21,7 @@ jobs:
       uses: usecasemonitor/superqa-githubaction@dev1.1
       with:
         api_key: ${{ secrets.SUPERQA_API_KEY }}
+        project_id: '6abe38f3afd659f4c9f9539e'
         project_name: 'Nova SuperQA'
         mode: protect
         wait_for_result: 'true'
