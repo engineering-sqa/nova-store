@@ -1,10 +1,8 @@
 name: SuperQA Protect
 
 on:
-  push:
   pull_request:
     types: [opened, synchronize, reopened]
-  workflow_dispatch:
 
 permissions:
   contents: read
@@ -17,17 +15,11 @@ jobs:
     steps:
     - name: Analyze changes and run affected tests
       id: superqa
-      uses: usecasemonitor/superqa-githubaction@dev1
+      uses: usecasemonitor/superqa-githubaction@dev1.1
       with:
         api_key: ${{ secrets.SUPERQA_API_KEY }}
-        project_name: "Nova SuperQA"
-        test_plan_name: "nova superqa login - Smoke Test Plan"
-        environment_name: "staging"
-        wait_for_result: true
-        timeout_seconds: 1800
-        poll_interval_seconds: 5
-        parallel_run: true
-        
+        mode: protect
+
     - name: Show SuperQA result
       if: always()
       env:
