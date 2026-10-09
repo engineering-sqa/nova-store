@@ -275,7 +275,7 @@ export const LoginScreen = () => {
                       id="auth-password"
                       type={showPassword ? "text" : "password"}
                       required
-                      placeholder="••••••••"
+                      placeholder="•••••••"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       className="form-input login-input-field password-input"
