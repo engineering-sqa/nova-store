@@ -258,7 +258,7 @@ export const LoginScreen = () => {
                       id="auth-email"
                       type="email"
                       required
-                      placeholder="abc@email.com"
+                      placeholder="Johndoe@email.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="form-input login-input-field"
