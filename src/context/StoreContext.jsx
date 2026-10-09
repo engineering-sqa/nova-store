@@ -343,7 +343,7 @@ export const StoreProvider = ({ children }) => {
     };
     setUser(guestUser);
     setIsAuthOpen(false);
-    addToast("Welcome! Signed in as Guest Explorer", "info");
+    addToast("Welcome! Signed in as Guest ", "info");
     return { success: true };
   };
 
@@ -375,7 +375,7 @@ export const StoreProvider = ({ children }) => {
 
   // Calculations
   const cartSubtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
-  
+
   let promoDiscount = 0;
   if (appliedCoupon && appliedCoupon.discountPercent) {
     promoDiscount = (cartSubtotal * appliedCoupon.discountPercent) / 100;
