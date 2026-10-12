@@ -16,11 +16,11 @@ jobs:
     steps:
     - name: Analyze changes and run affected tests
       id: superqa
-      uses: usecasemonitor/superqa-githubaction@main
+      uses: usecasemonitor/superqa-githubaction@dev1.1
       with:
         api_key: ${{ secrets.SUPERQA_API_KEY }}
-        project_id: '6abe38f3afd659f4c9f9539e'
-        project_name: 'Nova SuperQA'
+        project_id: '6ac8d86bc392b9491ee332ac'
+        project_name: 'SuperQA nova'
         mode: protect
         wait_for_result: 'true'
         timeout_seconds: '1800'
