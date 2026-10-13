@@ -22,6 +22,11 @@ jobs:
         project_id: '6abe38f3afd659f4c9f9539e'
         project_name: 'Nova SuperQA'
         mode: protect
+        environment_name: 'staging'
+        parallel_run: 'true'
+        notification_emails: 'engineer@superqa.ai,pavankumar230799@gmail.com'
+        notify_on_success: 'true'
+        skip_notifications: 'false'
         wait_for_result: 'true'
         timeout_seconds: '1800'
         poll_interval_seconds: '5'
