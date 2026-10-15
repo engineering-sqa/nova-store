@@ -19,8 +19,8 @@ jobs:
       uses: usecasemonitor/superqa-githubaction@main
       with:
         api_key: ${{ secrets.SUPERQA_API_KEY }}
-        project_id: '6acf0deb41fac1dddd7f13a9'
-        project_name: 'Nova intelli 5'
+        project_id: '6ad092affceddd9e0bd0d0f9'
+        project_name: 'new multi TC'
         mode: protect
         environment_name: 'staging'
         parallel_run: 'true'
