@@ -258,7 +258,7 @@ export const LoginScreen = () => {
                       id="auth-email"
                       type="email"
                       required
-                      placeholder="Johndoe@email.com"
+                      placeholder="Enter your email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="form-input login-input-field"
@@ -275,7 +275,7 @@ export const LoginScreen = () => {
                       id="auth-password"
                       type={showPassword ? "text" : "password"}
                       required
-                      placeholder="••••••••"
+                      placeholder="Enter your password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       className="form-input login-input-field password-input"
