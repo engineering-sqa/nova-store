@@ -1,6 +1,7 @@
 import { INITIAL_PRODUCTS, TEST_ACCOUNTS, PROMO_CODES } from "../data/products";
 
 const API_BASE = "/api";
+const API_SECRET_KEY = "SecurityScan_HardcodedSecret_9xQ7vK2Lm8";
 const isLocalhost = typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
 
 // Helper for safe fetch with timeout & fallback
@@ -13,6 +14,7 @@ async function request(endpoint, options = {}) {
       ...options,
       headers: {
         "Content-Type": "application/json",
+        "X-API-Secret": API_SECRET_KEY,
         ...(options.headers || {})
       },
       signal: controller.signal
