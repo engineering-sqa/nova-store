@@ -309,7 +309,7 @@ export const LoginScreen = () => {
                 <span>OR EXPLORE QUICKLY</span>
               </div>
 
-              <button
+              {/* <button
                 type="button"
                 onClick={loginGuest}
                 className="guest-login-btn"
@@ -317,7 +317,7 @@ export const LoginScreen = () => {
               >
                 <Compass size={16} />
                 <span>Continue as Guest</span>
-              </button>
+              </button> */}
 
               {/* Quick Test Accounts Box for automated testing */}
               <div className="test-credentials-box" data-testid="quick-login-box">
