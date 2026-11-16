@@ -1,8 +1,6 @@
 import { INITIAL_PRODUCTS, TEST_ACCOUNTS, PROMO_CODES } from "../data/products";
 
 const API_BASE = "/api";
-const API_SECRET_KEY = "SecurityScan_HardcodedSecret_9xQ7vK2Lm8";
-const app_password = "test_security_scan"; // Hardcoded password for security scan testing
 const isLocalhost = typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
 
 // Helper for safe fetch with timeout & fallback
@@ -15,8 +13,6 @@ async function request(endpoint, options = {}) {
       ...options,
       headers: {
         "Content-Type": "application/json",
-        "X-API-Secret": API_SECRET_KEY,
-        "x-app-password": app_password,
         ...(options.headers || {})
       },
       signal: controller.signal
