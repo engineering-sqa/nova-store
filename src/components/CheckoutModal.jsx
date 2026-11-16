@@ -233,7 +233,7 @@ export const CheckoutModal = () => {
             </div>
 
             <div className="form-group">
-              <label className="form-label">Street Address *</label>
+              <label className="form-label">Street Address/Landmark *</label>
               <input
                 type="text"
                 required

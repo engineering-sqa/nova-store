@@ -1,0 +1,49 @@
+name: SuperQA Protect
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  superqa-protect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    
+    steps:
+    - name: Analyze changes and run affected tests
+      id: superqa
+      uses: usecasemonitor/superqa-githubaction@main
+      with:
+        api_key: ${{ secrets.SUPERQA_API_KEY }}
+        project_id: '6ad092affceddd9e0bd0d0f9'
+        project_name: 'new multi TC'
+        mode: protect
+        environment_name: 'staging'
+        parallel_run: 'true'
+        notification_emails: 'pavankumar230799@gmail.com'
+        notify_on_success: 'true'
+        skip_notifications: 'false'
+        wait_for_result: 'true'
+        timeout_seconds: '1800'
+        poll_interval_seconds: '5'
+
+    - name: Show SuperQA result
+      if: always()
+      env:
+        RESULT: ${{ steps.superqa.outputs.test_result }}
+        DECISION: ${{ steps.superqa.outputs.release_decision }}
+        CONFIDENCE: ${{ steps.superqa.outputs.confidence_score }}
+        REPORT_URL: ${{ steps.superqa.outputs.report_url }}
+        ERROR_MESSAGE: ${{ steps.superqa.outputs.error_message }}
+      run: |
+        echo "Result: $RESULT"
+        echo "Release decision: $DECISION"
+        echo "Confidence: $CONFIDENCE"
+        echo "Report: $REPORT_URL"
+        if [ -n "$ERROR_MESSAGE" ]; then
+          echo "Error: $ERROR_MESSAGE"
+        fi

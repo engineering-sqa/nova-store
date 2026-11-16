@@ -33,7 +33,7 @@ export const Footer = () => {
                 Nova<span className="text-gradient">Store</span>
               </div>
               <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>
-                Dummy Full-Featured E-Commerce Test Application
+                Full-Featured E-Commerce Test Application
               </div>
             </div>
           </div>

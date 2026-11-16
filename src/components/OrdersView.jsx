@@ -20,7 +20,7 @@ export const OrdersView = () => {
             Order History
           </h2>
           <p style={{ color: "var(--text-secondary)", fontSize: "0.95rem" }}>
-            Review past orders, simulation fulfillment statuses, and tracking timelines.
+            Review past selected orders, simulation fulfillment statuses, and tracking timelines.
           </p>
         </div>
 

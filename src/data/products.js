@@ -320,7 +320,7 @@ export const TEST_ACCOUNTS = {
 };
 
 export const PROMO_CODES = {
-  SUPERQA20: { code: "SUPERQA20", discountPercent: 20, description: "20% SuperQA Special Discount" },
+  SUPERQA20: { code: "SUPERQA26", discountPercent: 20, description: "20% SuperQA Special Discount" },
   FREESHIP: { code: "FREESHIP", freeShipping: true, description: "100% Free Shipping Voucher" },
   WELCOME10: { code: "WELCOME10", discountPercent: 10, description: "10% Welcome Discount" }
 };

@@ -240,7 +240,7 @@ export const LoginScreen = () => {
                         id="signup-name"
                         type="text"
                         required
-                        placeholder="Alex QA"
+                        placeholder="John Doe"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         className="form-input login-input-field"
@@ -258,7 +258,7 @@ export const LoginScreen = () => {
                       id="auth-email"
                       type="email"
                       required
-                      placeholder="testuser@superqa.com"
+                      placeholder="Enter your email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="form-input login-input-field"
@@ -275,7 +275,7 @@ export const LoginScreen = () => {
                       id="auth-password"
                       type={showPassword ? "text" : "password"}
                       required
-                      placeholder="••••••••"
+                      placeholder="Enter your password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       className="form-input login-input-field password-input"
@@ -299,7 +299,7 @@ export const LoginScreen = () => {
                   className="btn-primary login-submit-btn"
                   data-testid="auth-submit-btn"
                 >
-                  <span>{isLoading ? "Authenticating..." : activeTab === "login" ? "Sign In to NovaStore" : "Register & Start Shopping"}</span>
+                  <span>{isLoading ? "Authenticating..." : activeTab === "login" ? "Sign In" : "Register & Start Shopping"}</span>
                   <ArrowRight size={16} />
                 </button>
               </form>
