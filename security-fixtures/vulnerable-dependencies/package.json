@@ -1,0 +1,11 @@
+{
+  "name": "vulnerable-dependencies-test-fixture",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Deliberately vulnerable dependencies for security scanner tests only. Do not run or deploy.",
+  "dependencies": {
+    "axios": "0.21.1",
+    "lodash": "4.17.15",
+    "minimist": "0.0.8"
+  }
+}
