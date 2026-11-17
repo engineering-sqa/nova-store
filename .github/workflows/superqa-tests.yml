@@ -1,4 +1,4 @@
-name: SuperQA Protect
+name: SuperQA PR checks
 
 on:
   pull_request:
@@ -10,17 +10,18 @@ permissions:
 
 jobs:
   superqa-protect:
+    name: SuperQA Protect
     runs-on: ubuntu-latest
     timeout-minutes: 35
     
     steps:
     - name: Analyze changes and run affected tests
-      id: superqa
+      id: protect
       uses: usecasemonitor/superqa-githubaction@main
       with:
         api_key: ${{ secrets.SUPERQA_API_KEY }}
-        project_id: '6ad092affceddd9e0bd0d0f9'
-        project_name: 'new multi TC'
+        project_id: '6af55d53cc5843be4009512d'
+        project_name: 'Super Nova'
         mode: protect
         environment_name: 'staging'
         parallel_run: 'true'
@@ -34,16 +35,49 @@ jobs:
     - name: Show SuperQA result
       if: always()
       env:
-        RESULT: ${{ steps.superqa.outputs.test_result }}
-        DECISION: ${{ steps.superqa.outputs.release_decision }}
-        CONFIDENCE: ${{ steps.superqa.outputs.confidence_score }}
-        REPORT_URL: ${{ steps.superqa.outputs.report_url }}
-        ERROR_MESSAGE: ${{ steps.superqa.outputs.error_message }}
+        RESULT: ${{ steps.protect.outputs.test_result }}
+        DECISION: ${{ steps.protect.outputs.release_decision }}
+        CONFIDENCE: ${{ steps.protect.outputs.confidence_score }}
+        REPORT_URL: ${{ steps.protect.outputs.report_url }}
+        ERROR_MESSAGE: ${{ steps.protect.outputs.error_message }}
       run: |
         echo "Result: $RESULT"
         echo "Release decision: $DECISION"
         echo "Confidence: $CONFIDENCE"
         echo "Report: $REPORT_URL"
+        if [ -n "$ERROR_MESSAGE" ]; then
+          echo "Error: $ERROR_MESSAGE"
+        fi
+
+  superqa-security:
+    name: SuperQA Security Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+
+    steps:
+    - name: Scan pull-request security
+      id: security
+      uses: usecasemonitor/superqa-githubaction@main
+      with:
+        api_key: ${{ secrets.SUPERQA_API_KEY }}
+        project_id: '6af55d53cc5843be4009512d'
+        project_name: 'Super Nova'
+        mode: security-scan
+        wait_for_result: 'true'
+        timeout_seconds: '1800'
+        poll_interval_seconds: '5'
+
+    - name: Show security scan result
+      if: always()
+      env:
+        SECURITY_STATUS: ${{ steps.security.outputs.security_status }}
+        SECURITY_FINDINGS: ${{ steps.security.outputs.security_findings }}
+        SECURITY_REPORT_URL: ${{ steps.security.outputs.security_report_url }}
+        ERROR_MESSAGE: ${{ steps.security.outputs.error_message }}
+      run: |
+        echo "Security status: $SECURITY_STATUS"
+        echo "Security findings: $SECURITY_FINDINGS"
+        echo "Security report: $SECURITY_REPORT_URL"
         if [ -n "$ERROR_MESSAGE" ]; then
           echo "Error: $ERROR_MESSAGE"
         fi
